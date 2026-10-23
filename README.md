@@ -46,7 +46,7 @@ Metrics are computed with `eval.py`. The LR input is produced by bicubic downsam
 
 ### Qualitative
 
-<p align="center"> <img src="assets/butterfly_compare.png" alt="Butterfly comparison" width="100%"> <br> <img src="assets/woman_compare.png" alt="Woman comparison" width="100%"> <br> <em>Left to right: low-resolution input (enlarged), bicubic, ours, original.</em> </p>
+<p align="center"> <img src="eval_set5/butterfly_compare.png" alt="Butterfly comparison" width="100%"> <em>Left to right: low-resolution input (enlarged), bicubic, ours, original.</em> </p>
 
 ## Method
 
