@@ -61,7 +61,6 @@ def main():
         name = os.path.splitext(fname)[0]
         hr = Image.open(os.path.join(opt.data_dir, fname)).convert("RGB")
 
-        # Crop (not resize) so dimensions are divisible by the scale factor
         w, h = hr.size
         w, h = w - w % s, h - h % s
         hr = hr.crop((0, 0, w, h))
@@ -109,7 +108,7 @@ def main():
                 panel.paste(im, (i * w, 0))
             panel.save(os.path.join(opt.output_dir, f"{name}_compare.png"))
 
-    # Results table
+    
     print(f"\n{'image':<20}{'bicubic PSNR':>14}{'model PSNR':>12}{'gain':>8}{'bicubic SSIM':>14}{'model SSIM':>12}")
     for r in rows:
         print(f"{r['image']:<20}{r['bicubic_psnr']:>14.2f}{r['model_psnr']:>12.2f}"

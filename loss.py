@@ -23,7 +23,7 @@ class VGGLoss(nn.Module):
         self.vgg = vgg
         self.criterion = nn.L1Loss()
 
-        # Buffers follow the module to whatever device it is moved to
+
         self.register_buffer("mean", torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1))
         self.register_buffer("std", torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1))
 

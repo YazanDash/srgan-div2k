@@ -36,7 +36,7 @@ def rgb_to_y(img):
 
 
 def psnr_y(pred_01, target_01, border=4):
-    """PSNR on the Y channel with `border` pixels cropped from every side."""
+    #PSNR on the Y channel with `border` pixels cropped from every side.
     pred_y = rgb_to_y(pred_01)
     target_y = rgb_to_y(target_01)
     if border > 0:
@@ -132,14 +132,12 @@ if __name__ == "__main__":
             lr_img = lr_img.to(device,non_blocking=True)
             hr_img = hr_img.to(device,non_blocking=True)
 
-            # -----------------------------------------------------------------
-            # (0) Generate fake image first (needed for both D and G)
-            # -----------------------------------------------------------------
+            # Generate fake image first (needed for both D and G)
             fake_img = netG(lr_img)
 
-            # -----------------------------------------------------------------
-            # (1) Update Discriminator
-            # -----------------------------------------------------------------
+
+            # Update Discriminator
+
             if opt.gan_weight > 0.0:
                 optimizerD.zero_grad()
 
@@ -155,10 +153,8 @@ if __name__ == "__main__":
             else:
                 d_loss = torch.tensor(0.0, device=device)
 
-            # -----------------------------------------------------------------
-            # (2) Update Generator
-            # -----------------------------------------------------------------
-            # (2) Update Generator
+
+            # Update Generator
             optimizerG.zero_grad()
 
             g_pixel_loss = criterion_pixel(fake_img, hr_img)
@@ -181,9 +177,9 @@ if __name__ == "__main__":
             train_bar.set_description(
                 desc=f"[{epoch}/{opt.epochs}] Loss_D: {d_loss.item():.4f} Loss_G: {g_loss.item():.4f}"
             )
-        # -----------------------------------------------------------------
-        # (3) Validation Loop (Y-channel PSNR, SSIM, bicubic baseline)
-        # -----------------------------------------------------------------
+
+        # Validation
+
         netG.eval()
         val_psnr = 0.0
         val_ssim = 0.0
@@ -206,10 +202,7 @@ if __name__ == "__main__":
                 bic_01 = torch.clamp((bic + 1.0) / 2.0, 0.0, 1.0)
                 bicubic_psnr += psnr_y(bic_01, hr_01, border=opt.scale_factor).item()
 
-                # Model PSNR (Y channel, border cropped)
                 val_psnr += psnr_y(fake_01, hr_01, border=opt.scale_factor).item()
-
-                # SSIM
                 fake_np = fake_01.squeeze(0).cpu().numpy().transpose(1, 2, 0)
                 hr_np = hr_01.squeeze(0).cpu().numpy().transpose(1, 2, 0)
                 val_ssim += calculate_ssim(fake_np, hr_np, channel_axis=2, data_range=1.0)
@@ -226,7 +219,7 @@ if __name__ == "__main__":
             f"Val SSIM: {avg_ssim:.4f}"
         )
 
-        # Save visual validation sample (last validation image)
+
         sample_img = TF.to_pil_image(fake_01.squeeze(0).cpu())
         sample_img.save(f"epochs/epoch_{epoch}_psnr_{avg_psnr:.2f}.png")
 

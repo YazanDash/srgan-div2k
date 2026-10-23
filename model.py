@@ -10,20 +10,20 @@ class Generator(nn.Module):
         self.scale_factor = scale_factor
         upsample_block_num = int(math.log(scale_factor, 2))
 
-        # Head
+
         self.head = nn.Sequential(
             nn.Conv2d(3, 64, 9, 1, padding=4),
             nn.PReLU()
         )
 
-        # Body: residual blocks + conv/BN before the long skip connection
+
         self.res_blocks = nn.Sequential(*[ResidualBlock(64) for _ in range(num_res_blocks)])
         self.mid = nn.Sequential(
             nn.Conv2d(64, 64, 3, 1, padding=1),
             nn.BatchNorm2d(64)
         )
 
-        # Tail: pixel-shuffle upsampling + output conv
+
         tail = [UpsampleBLock(64, 2) for _ in range(upsample_block_num)]
         tail.append(nn.Conv2d(64, 3, kernel_size=9, padding=4))
         self.tail = nn.Sequential(*tail)
@@ -33,7 +33,7 @@ class Generator(nn.Module):
         body = self.mid(self.res_blocks(head))
         out = self.tail(head + body)
 
-        # Bicubic skip: the network only learns the missing detail
+
         base = F.interpolate(x, scale_factor=self.scale_factor, mode="bicubic", align_corners=False)
         return torch.clamp(base + out, -1.0, 1.0)
 

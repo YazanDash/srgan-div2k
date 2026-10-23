@@ -43,7 +43,7 @@ class DIV2KDataset(Dataset):
         return len(self.hr_paths) * 10
 
     def _sync_transform(self, hr_img: Image.Image, lr_img: Image.Image):
-        # 1. Get image dimensions (LR space)
+        # 1. Get image dimensions
         w_lr, h_lr = lr_img.size
 
         if w_lr < self.lr_crop_size or h_lr < self.lr_crop_size:
@@ -91,7 +91,7 @@ class DIV2KDataset(Dataset):
 
         return self._sync_transform(hr_img, lr_img)
 
-    # FIX 3: Removed 'self' parameter from staticmethod
+    # Removed 'self' parameter from staticmethod
     @staticmethod
     def visualization_norm(hr_img: torch.Tensor, lr_img: torch.Tensor):
         hr_vis = (hr_img + 1.0) / 2.0

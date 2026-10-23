@@ -12,7 +12,7 @@ print("Generating 100 Low-Resolution Validation Images...")
 for filename in tqdm(hr_files):
     hr_path = os.path.join(hr_val_dir, filename)
 
-    # DIV2K official naming convention for X4 downsampling (e.g., 0801x4.png)
+    # DIV2K official naming convention
     base_name = os.path.splitext(filename)[0]
     lr_filename = f"{base_name}x4.png"
     lr_path = os.path.join(lr_val_dir, lr_filename)
