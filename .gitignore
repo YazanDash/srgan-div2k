@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pth
+checkpoints/
+epochs/
+phase1*/
+eval_*/
+out_srf_*/
+DIV2K_*/
+Set5/
+Set14/
+.venv/
+.ipynb_checkpoints/
